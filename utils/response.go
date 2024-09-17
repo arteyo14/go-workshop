@@ -4,30 +4,25 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func JSONResponse(c *gin.Context, code int, data interface{}) {
-	c.JSON(code, gin.H{
-		"status": true,
+func JSONResponse(c *gin.Context, code int, status bool, data interface{}) {
+	response := gin.H{
+		"status": status,
 		"code":   code,
-		"data":   data,
-	})
-}
+	}
 
-func JSONSuccessResponse(c *gin.Context, code int, message string) {
-	c.JSON(code, gin.H{
-		"status":  true,
-		"code":    code,
-		"message": message,
-	})
+	// เช็คประเภทข้อมูลที่เป็น `string` เพื่อใช้เป็น `message`
+	if message, ok := data.(string); ok {
+		response["message"] = message
+	} else {
+		response["data"] = data
+	}
+
+	c.JSON(code, response)
 }
 
 func JSONErrorResponse(c *gin.Context, code int, err error) {
 	if err != nil {
-		errMessage := err.Error()
-		c.JSON(code, gin.H{
-			"status":  false,
-			"code":    code,
-			"message": errMessage,
-		})
+		JSONResponse(c, code, false, err.Error())
 		return
 	}
 }

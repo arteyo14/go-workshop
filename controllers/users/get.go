@@ -53,5 +53,5 @@ func GetUsers(c *gin.Context) {
 		users = append(users, user)
 	}
 
-	response.JSONResponse(c, http.StatusOK, users)
+	response.JSONResponse(c, http.StatusOK, true, users)
 }
