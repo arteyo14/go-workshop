@@ -48,5 +48,5 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	response.JSONSuccessResponse(c, http.StatusCreated, "Created user successfully!")
+	response.JSONResponse(c, http.StatusCreated, true, "Created user successfully!")
 }
